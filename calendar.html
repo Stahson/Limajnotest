@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalendarz Dynamiczny</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f3f3f3;
+        }
+        .calendar {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .calendar-header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .calendar-header button:disabled {
+            color: #ccc;
+            cursor: default;
+        }
+        .days-of-week, .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .days-of-week div, .days div {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .days-of-week div {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+        .days div {
+            border-right: 1px solid #ddd;
+            height: 50px;
+            cursor: pointer;
+        }
+        .days div:last-child {
+            border-right: none;
+        }
+        .reserved {
+            background-color: #f08080; /* Kolor dla zajętych dni */
+        }
+        .day {
+            color: #333;
+        }
+        .today {
+            color: #fd0808;
+        }
+        .selected {
+            background-color: #a5d6a7;
+        }
+        .in-range {
+            background-color: #c8e6c9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calendar">
+    <!-- Nagłówek kalendarza z przyciskami do przewijania -->
+    <div class="calendar-header">
+        <button onclick="changeMonth(-1)">&#9664;</button>
+        <h2 id="monthYear"></h2>
+        <button onclick="changeMonth(1)">&#9654;</button>
+    </div>
+
+    <!-- Dni tygodnia -->
+    <div class="days-of-week">
+        <div>Pn</div>
+        <div>Wt</div>
+        <div>Śr</div>
+        <div>Cz</div>
+        <div>Pt</div>
+        <div>Sob</div>
+        <div>Nd</div>
+    </div>
+
+    <!-- Dni miesiąca -->
+    <div class="days" id="calendarDays"></div>
+</div>
+
+<script>
+    const monthYear = document.getElementById("monthYear");
+    const calendarDays = document.getElementById("calendarDays");
+    let currentDate = new Date();
+    let startDate = null;
+    let endDate = null;
+    let reservedDates = new Set();
+    
+
+    function renderCalendar(date) {
+        
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
+        monthYear.textContent = date.toLocaleDateString("pl-PL", {
+            year: "numeric",
+            month: "long"
+        });
+
+        calendarDays.innerHTML = "";
+
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const startDay = (firstDayOfMonth + 6) % 7;
+        
+        for (let i = 0; i < startDay; i++) {
+            const emptyDiv = document.createElement("div");
+            calendarDays.appendChild(emptyDiv);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("day");
+            dayDiv.textContent = day;
+            dayDiv.dataset.date = new Date(year, month, day).toISOString().split("T")[0];
+
+            const today = new Date();
+            if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+                dayDiv.classList.add("today");
+            }
+
+            dayDiv.addEventListener("click", () => handleDateSelection(dayDiv));
+
+            calendarDays.appendChild(dayDiv);
+        }
+        if (reservedDates.has(dayDate)) {
+                dayDiv.classList.add("reserved");
+            }
+
+        highlightRange();
+    }
+
+    function handleDateSelection(dayDiv) {
+        const selectedDate = new Date(dayDiv.dataset.date);
+
+        if (!startDate || (startDate && endDate)) {
+            startDate = selectedDate;
+            endDate = null;
+        } else if (selectedDate >= startDate) {
+            endDate = selectedDate;
+        } else {
+            startDate = selectedDate;
+            endDate = null;
+        }
+
+        highlightRange();
+    }
+
+    function highlightRange() {
+        const dayDivs = document.querySelectorAll(".day");
+        dayDivs.forEach(dayDiv => {
+            dayDiv.classList.remove("selected", "in-range");
+            const dayDate = new Date(dayDiv.dataset.date);
+
+            if (startDate && dayDate.getTime() === startDate.getTime()) {
+                dayDiv.classList.add("selected");
+            }
+
+            if (endDate && dayDate.getTime() === endDate.getTime()) {
+                dayDiv.classList.add("selected");
+            }
+
+            if (startDate && endDate && dayDate > startDate && dayDate < endDate) {
+                dayDiv.classList.add("in-range");
+            }
+        });
+    }
+
+    function changeMonth(monthChange) {
+        currentDate.setMonth(currentDate.getMonth() + monthChange);
+        renderCalendar(currentDate);
+    }
+
+    renderCalendar(currentDate); // Pierwsze renderowanie kalendarza
+</script>
+
+</body>
+</html>

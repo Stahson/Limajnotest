@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazury - Jezioro i Wypoczynek</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f3f3f3;
+        }
+        .top-nav {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 15px;
+            background-color: #333;
+            border-radius: 5px;
+        }
+        .top-nav a:hover {
+            background-color: #575757;
+        }
+        header {
+            background-image: url('images/header.jpg');
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            color: #000;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 0;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #575757;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+        nav a {
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #575757;
+        }
+        section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        .attractions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .attraction-item {
+            flex: 1 1 30%;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .nav-links a {
+            color: white;
+            background-color: #333;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .nav-links a:hover {
+            background-color: #575757;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="dom1.html">Dom 1</a>
+        <a href="dom2.html">Dom 2</a>
+        <a href="calendar2.html">kalendarz</a>
+        <a href="#about">O Jeziorze</a>
+        <a href="#gallery">Galeria</a>
+        <a href="#attractions">Atrakcje</a>
+        <a href="#contact">Kontakt</a>
+    </div>
+
+<header>
+    <h1>Witamy na Mazurach</h1>
+    <p>Odkryj piękno polskich jezior i ciesz się spokojem natury</p>
+</header>
+
+
+
+<section id="about">
+    <h2>O Mazurskim Jeziorze</h2>
+    <p>Mazury to region pełen jezior i lasów, idealne miejsce dla każdego, kto pragnie odpocząć od zgiełku miasta i zanurzyć się w naturze. Czysta woda, świeże powietrze oraz liczne atrakcje sprawiają, że Mazury to idealny wybór na urlop o każdej porze roku.</p>
+</section>
+
+<section id="gallery">
+    <h2>Galeria</h2>
+    <div class="gallery">
+        <img src="zdjecia/szcur.jpg" alt="Jezioro Mazurskie">
+        <img src="images/jezioro2.jpg" alt="Zachód słońca nad jeziorem">
+        <img src="images/las.jpg" alt="Las nad jeziorem">
+    </div>
+</section>
+
+<section id="attractions">
+    <h2>Atrakcje</h2>
+    <div class="attractions">
+        <div class="attraction-item">
+            <h3>Żeglarstwo</h3>
+            <p>Mazury to doskonałe miejsce dla miłośników sportów wodnych. Liczne jeziora oferują idealne warunki do żeglowania.</p>
+        </div>
+        <div class="attraction-item">
+            <h3>Spływy kajakowe</h3>
+            <p>Przeżyj niezapomnianą przygodę na wodzie i odkryj Mazury z perspektywy kajaka.</p>
+        </div>
+        <div class="attraction-item">
+            <h3>Wędrówki po lasach</h3>
+            <p>Piękne, naturalne lasy to idealne miejsce na spacery i podziwianie przyrody.</p>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Kontakt</h2>
+    <p>Masz pytania? Skontaktuj się z nami, a chętnie pomożemy Ci zaplanować idealny wypoczynek.</p>
+    <form class="contact-form">
+        <label for="name">Imię:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="message">Wiadomość:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+        
+        <button type="submit">Wyślij</button>
+    </form>
+</section>
+
+<footer>
+    <p>&copy; 2023 Mazury Jezioro. Wszystkie prawa zastrzeżone.</p>
+</footer>
+
+
+</body>
+</html>
