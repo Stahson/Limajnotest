@@ -1,25 +1,25 @@
-// const firebaseConfig = {
+const firebaseConfig = {
 
-//     apiKey: "AIzaSyCS2J5AxvS9PpNXqNLNjKP4vM1jtGOjITQ",
+    apiKey: "AIzaSyCS2J5AxvS9PpNXqNLNjKP4vM1jtGOjITQ",
   
-//     authDomain: "flutter-a9dce.firebaseapp.com",
+    authDomain: "flutter-a9dce.firebaseapp.com",
   
-//     databaseURL: "https://flutter-a9dce-default-rtdb.firebaseio.com",
+    databaseURL: "https://flutter-a9dce-default-rtdb.firebaseio.com",
   
-//     projectId: "flutter-a9dce",
+    projectId: "flutter-a9dce",
   
-//     storageBucket: "flutter-a9dce.firebasestorage.app",
+    storageBucket: "flutter-a9dce.firebasestorage.app",
   
-//     messagingSenderId: "561921975040",
+    messagingSenderId: "561921975040",
   
-//     appId: "1:561921975040:web:f68ca5366233d71c0849e5",
+    appId: "1:561921975040:web:f68ca5366233d71c0849e5",
   
-//     measurementId: "G-0269001WYP"
+    measurementId: "G-0269001WYP"
   
-// };
+};
 
-// firebase.initializeApp(firebaseConfig);
-// var db =firebase.database().ref('limajno');
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
 
 let calendar = document.querySelector('.calendar')
 let firstSelectedDate = null;
@@ -70,9 +70,21 @@ generateCalendar = (month, year) => {
                 day.classList.add('curr-date')
             }
             day.addEventListener('click', () => selectDate(i - first_day.getDay() + 1))
+            db.collection(year.toString()+"_z") // e.g., 2024 collection
+            .doc(month.toString()) // e.g., 5 for May
+            .get()
+            .then(doc => {
+                let savedDates = doc.data();            
+                if (savedDates[(i-first_day.getDay()+1).toString()]) {
+                    day.classList.add('red-selected');
+                }
+            });
         }
         calendar_days.appendChild(day)
     }
+    
+
+        
 }
 
 let month_list = calendar.querySelector('.month-list')
@@ -111,12 +123,12 @@ document.querySelector('#next-year').onclick = () => {
     generateCalendar(curr_month.value, curr_year.value)
 }
 
-let dark_mode_toggle = document.querySelector('.dark-mode-switch')
+// let dark_mode_toggle = document.querySelector('.dark-mode-switch')
 
-dark_mode_toggle.onclick = () => {
-    document.querySelector('body').classList.toggle('light')
-    document.querySelector('body').classList.toggle('dark')
-}
+// dark_mode_toggle.onclick = () => {
+//     document.querySelector('body').classList.toggle('light')
+//     document.querySelector('body').classList.toggle('dark')
+// }
 
 
 function selectDate(dayNumber) {
@@ -140,6 +152,7 @@ function highlightRange(start, end) {
         if (dayNumber >= Math.min(start, end) && dayNumber <= Math.max(start, end)) {
             day.classList.add('selected-range');
         }
+        
     });
 }
 
@@ -147,12 +160,31 @@ function resetSelection() {
     document.querySelectorAll('.calendar-days div').forEach(day => day.classList.remove('selected-range'));
 }
 
-document.querySelector('.select-date-button').onclick = () => {
+document.querySelector('#przycisk').onclick = () => {
     if (firstSelectedDate && secondSelectedDate) {
-        alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate}`);
-        // Możesz również wysłać te dane lub podjąć inne działanie
+        let start = Math.min(firstSelectedDate, secondSelectedDate);
+        let end = Math.max(firstSelectedDate, secondSelectedDate);
+
+        // Inicjalizuj obiekt na przechowanie zakresu dat jako osobne pola
+        let dateFields = {};
+        
+        for (let day = start; day <= end; day++) {
+            dateFields[day] = { date: day };
+        }
+
+      
+        db.collection(curr_year.value.toString()+"_z").doc(curr_month.value.toString()).set(dateFields, { merge: true })
+        .then(() => {
+            alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate} został zarezerwowany.`);
+            console.log("Dane zapisane:", dateFields);
+        })
+        .catch((error) => {
+            console.error("Błąd przy zapisywaniu: ", error);
+            alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
+        });
     } else {
         alert("Proszę wybrać zakres dat przed potwierdzeniem.");
+        console.log("Brak wybranego zakresu dat.");
     }
 };
 
