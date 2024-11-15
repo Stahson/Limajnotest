@@ -73,10 +73,19 @@ generateCalendar = (month, year) => {
             db.collection(year.toString()+"_z") // e.g., 2024 collection
             .doc(month.toString()) // e.g., 5 for May
             .get()
-            .then(doc => {
+            .then(doc => {                
                 let savedDates = doc.data();            
                 if (savedDates[(i-first_day.getDay()+1).toString()]) {
                     day.classList.add('red-selected');
+                }
+            });
+            db.collection(year.toString()+"_r") // e.g., 2024 collection
+            .doc(month.toString()) // e.g., 5 for May
+            .get()
+            .then(doc => {                
+                let savedDates = doc.data();            
+                if (savedDates[(i-first_day.getDay()+1).toString()]) {
+                    day.classList.add('shaped-selected');
                 }
             });
         }
@@ -173,7 +182,7 @@ document.querySelector('#przycisk').onclick = () => {
         }
 
       
-        db.collection(curr_year.value.toString()+"_z").doc(curr_month.value.toString()).set(dateFields, { merge: true })
+        db.collection(curr_year.value.toString()+"_r").doc(curr_month.value.toString()).set(dateFields, { merge: true })
         .then(() => {
             alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate} został zarezerwowany.`);
             console.log("Dane zapisane:", dateFields);

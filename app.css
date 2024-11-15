@@ -44,6 +44,31 @@
     transform: scale(1.1);
 }
 
+.shaped-selected {
+    background: repeating-linear-gradient(
+        45deg,         /* Angle of the stripes */
+        red,           /* Start color */
+        red 5px,       /* Red stripe width */
+        white 5px,     /* White stripe transition start */
+        white 10px    /* White stripe width */
+    );
+    color: black;       /* Text color that contrasts with red and white */
+    border-radius: 50%; /* Circular shape */
+    font-weight: bold;
+    padding: 5px;       /* Adjust padding for a balanced look */
+    box-sizing: border-box;
+}
+
+.shaped-selected:hover {
+    background: repeating-linear-gradient(
+        45deg,
+        darkred,
+        darkred 5px,
+        white 5px,
+        white 10px
+    );
+    transform: scale(1.1);
+}
 .light {
     --bg-body: var(--light-body);
     --bg-main: var(--light-main);
