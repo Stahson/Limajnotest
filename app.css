@@ -5,7 +5,7 @@
     --dark-hover: #323048;
     --dark-text: #f8fbff;
 
-    --light-body: #f3f8fe;
+    --light-body: white;
     --light-main: #fdfdfd;
     --light-second: #c3c2c8;
     --light-hover: #edf0f5;
@@ -16,7 +16,7 @@
 
     --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
-    --font-family: cursive;
+    --font-family: Arial, sans-serif;
 }
 
 .dark {

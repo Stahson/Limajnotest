@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <title>Mazury - Jezioro i Wypoczynek</title>
     <style>
         body {
@@ -82,7 +83,20 @@
             margin: auto;
         }
         h2 {
-            color: #4CAF50;
+            color: black; /* Kolor tekstu */
+            text-align: center; /* Wyśrodkowanie tekstu */
+            position: relative; /* Pozwoli na ustawienie kreski w stosunku do tekstu */
+        }
+
+        h2::after {
+            content: ""; /* Tworzymy pseudoelement */
+            position: absolute;
+            left: 50%;
+            bottom: -10px; /* Odstęp od tekstu */
+            width: 40%; /* Szerokość linii */
+            height: 2px; /* Grubość linii */
+            background-color: #02f80a; /* Kolor linii */
+            transform: translateX(-50%); /* Wyśrodkowanie linii */
         }
         .attractions {
             display: flex;
@@ -202,6 +216,22 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
+        .circle {
+            width: 150px;
+            color: #02f80a;
+            height: 150px;
+            border-radius: 50%; /* Kształt koła */
+            overflow: hidden; /* Ukrywa część obrazka wystającą poza kółko */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Zapewnia odpowiednie dopasowanie obrazu */
+        }
         
                 
         
@@ -213,14 +243,13 @@
     <div class="navbar">
         <a href="#slider"><i class="fa fa-home"></i></a>
         <a href="zuraw.html">Dom Żurawia</a>
-        <a href="dom2.html">Dom 2</a>
-        <a href="calendar2.html">kalendarz</a>
-        <a href="#about">O Jeziorze</a>
-        <a href="#gallery">Galeria</a>
-        <a href="#attractions">Atrakcje</a>
+        <a href="labedz.html">Dom Łabędzia</a>
+        <a href="#attractions">Atrakcje Okolicy</a>
         <a href="#regulamin">Regulamin</a>
         <a href="#contact">Kontakt</a>
     </div>
+
+
     <section id="slider">
     <div class="slider-container">
         <div class="slider-text">
@@ -242,44 +271,39 @@
     </div>
     </section>
 
-
-<section id="about">
-    <h2>O Mazurskim Jeziorze</h2>
-    <p>Mazury to region pełen jezior i lasów, idealne miejsce dla każdego, kto pragnie odpocząć od zgiełku miasta i zanurzyć się w naturze. Czysta woda, świeże powietrze oraz liczne atrakcje sprawiają, że Mazury to idealny wybór na urlop o każdej porze roku.</p>
-</section>
-
-<section id="gallery">
-    <h2>Galeria</h2>
-    <div class="gallery">
-        <img src="zdjecia/szcur.jpg" alt="Jezioro Mazurskie">
-        <img src="images/jezioro2.jpg" alt="Zachód słońca nad jeziorem">
-        <img src="images/las.jpg" alt="Las nad jeziorem">
+    <div class="circle">
+        <img src="zdjecia/zurawlogo.png" alt="Logo">
     </div>
-</section>
 
+<section id="attractions">
+    <h2>Atrakcje okolicy</h2>
+    <p>Cerkiewnik położony jest w samym centrum historycznej Warmii, a nasze domy znajdują się na Obszarze Chronionego Krajobrazu Doliny Środkowej Łyny oraz na terenie zespołu przydoniczo-karajobrazowego „Jazioro Limajno i okolice”.</p>
+    
+    <ul>
+        <li><strong>Jezioro Limajno</strong> - zwane „Perłą Warmii”, posiada II klasę czystości wód, liczne zatoczki, półwyspy oraz zalesioną wyspę. Czystość wód jeziora oraz strefa ciszy tworzą idealne warunki dla kąpieli, amatorów sportów wodnych oraz wędkowania.
+        </li>
+        <li><strong>Kąpielisko w Sobodnej nad Jeziorem Limajno</strong> - 5 km od Cerkiewnika.</li>
+        <li><strong>Rzeka Łyna</strong> - główna rzeka Warmii, w odległości 2 km od działki. Rzeka zapewnia bardzo ciekawy szlak kajakowy o dużej różnorodności i rozmaitym stopniu trudności.
+            <a href="http://www.splywy.pl/lyna/lyna_dok.htm" target="_blank">Więcej informacji</a>
+        </li>
+        <li><strong>Aqua Park</strong> w Dobrej Mieście - 10 km
+            <a href="http://www.osir.dobremiasto.com.pl/index.php/basen-na-fali/" target="_blank">Więcej informacji</a>
+        </li>
+        <li><strong>Termy w Lidzbarku Warmińskim</strong> - 30 km
+            <a href="http://www.termywarminskie.pl" target="_blank">Więcej informacji</a>
+        </li>
+        <li><strong>Rower</strong> - liczne trasy rowerowe, zarówno w terenie leśnym, pętle wokół jezior, wśród pogórkowatego terenu łąk Warmii.</li>
+        <li><strong>Las</strong> - w odległości 300 m od działki. Idealne lasy dla spacerowiczów, grzybiarzy oraz rowerzystów.</li>
+    </ul>
+    
+    <p><strong>Warmia:</strong> Atrakcje, zabytki, ciekawe miejsca. Co warto zwiedzić i zobaczyć?
+        <a href="http://www.podrozepoeuropie.pl/warmia-atrakcje/" target="_blank">Więcej informacji</a>
+    </p>
+</section>
 <section id="regulamin">
     <h2>Regulamin</h2>
     <a href="zdjecia/Regulamin.pdf" download="regulamin.pdf">Pobierz regulamin</a>
 </section>
-
-<section id="attractions">
-    <h2>Atrakcje</h2>
-    <div class="attractions">
-        <div class="attraction-item">
-            <h3>Żeglarstwo</h3>
-            <p>Mazury to doskonałe miejsce dla miłośników sportów wodnych. Liczne jeziora oferują idealne warunki do żeglowania.</p>
-        </div>
-        <div class="attraction-item">
-            <h3>Spływy kajakowe</h3>
-            <p>Przeżyj niezapomnianą przygodę na wodzie i odkryj Mazury z perspektywy kajaka.</p>
-        </div>
-        <div class="attraction-item">
-            <h3>Wędrówki po lasach</h3>
-            <p>Piękne, naturalne lasy to idealne miejsce na spacery i podziwianie przyrody.</p>
-        </div>
-    </div>
-</section>
-
 <section id="contact">
     <h2>Kontakt</h2>
     <p>Masz pytania? Skontaktuj się z nami, a chętnie pomożemy Ci zaplanować idealny wypoczynek.</p>
