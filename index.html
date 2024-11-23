@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-    <title>Mazury - Jezioro i Wypoczynek</title>
+    <title>Osada Limajno</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -148,8 +148,8 @@
 
         .slider-container {
             position: relative;
-            width: 80%;
-            max-width: 1000px;
+            width: 100%;
+            max-width: 100%;
             margin: auto;
             overflow: hidden;
             border-radius: 10px;
@@ -206,10 +206,12 @@
 
         .left-arrow {
             left: 10px;
+            z-index: 200; 
         }
 
         .right-arrow {
             right: 10px;
+            z-index: 200; 
         }
 
         .arrow:hover {
@@ -217,21 +219,49 @@
         }
 
         .circle {
-            width: 150px;
-            color: #02f80a;
-            height: 150px;
-            border-radius: 50%; /* Kształt koła */
-            overflow: hidden; /* Ukrywa część obrazka wystającą poza kółko */
+            position: absolute;
+            bottom: 20px;
+            left: 20px;  /* Ustawienie na lewym górnym rogu */
+            width: 200px;
+            height: 200px;
+            background-color: white;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 100;  /* Upewnij się, że koło będzie na wierzchu */
         }
 
         .circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Zapewnia odpowiednie dopasowanie obrazu */
+            width: 360%;
+            height: 360%;
+            object-fit: cover; 
+            transform: translateX(-3%);
+            pointer-events: none;
         }
+        .circle_right {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;  /* Ustawienie na lewym górnym rogu */
+            width: 200px;
+            height: 200px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;  
+            pointer-events: auto;
+        }
+
+        .circle_right img {
+            width: 400%;
+            height: 400%;
+            object-fit: cover; 
+            transform: translateX(-5%);
+            pointer-events: none;
+        }
+        
         
                 
         
@@ -263,17 +293,21 @@
             <div class="img-container"><img src="zdjecia/main/IMG_2972.JPG"></div>
             <div class="img-container"><img src="zdjecia/main/IMG_2973.JPG"></div>
             <div class="img-container"><img src="zdjecia/main/IMG_8945.JPG"></div>
-            <div class="img-container"><img src="zdjecia/main/IMG_9067.JPG"></div>
-        </div>
+        </div>       
+            <div class="circle" onclick="window.location.href='zuraw.html'">
+                <img src="zdjecia/żuraw.png">
+            </div>
+
+            <div class="circle_right" onclick="window.location.href='labedz.html'">
+                <img src="zdjecia/łabędź.png">
+            </div>
         <button class="arrow left-arrow" onclick="prevSlide()">&#10094;</button>
         <button class="arrow right-arrow" onclick="nextSlide()">&#10095;</button>
         <script src="slider.js"></script>
     </div>
     </section>
 
-    <div class="circle">
-        <img src="zdjecia/zurawlogo.png" alt="Logo">
-    </div>
+    
 
 <section id="attractions">
     <h2>Atrakcje okolicy</h2>

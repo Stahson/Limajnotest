@@ -22,4 +22,4 @@ function prevSlide() {
 }
 
 // Opcjonalnie: automatyczne przewijanie co 3 sekundy
-setInterval(nextSlide, 3000);
+setInterval(nextSlide, 5000);
