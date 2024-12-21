@@ -222,8 +222,8 @@
             position: absolute;
             bottom: 20px;
             left: 20px;  /* Ustawienie na lewym górnym rogu */
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             background-color: white;
             border-radius: 50%;
             display: flex;
@@ -243,8 +243,8 @@
             position: absolute;
             bottom: 20px;
             right: 20px;  /* Ustawienie na lewym górnym rogu */
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             background-color: white;
             border-radius: 50%;
             display: flex;
@@ -262,7 +262,29 @@
             pointer-events: none;
         }
         
-        
+        @media screen and (max-width: 768px) {
+        .circle, .circle_right {
+            width: 120px;
+            height: 120px;
+        }
+
+        .circle img, .circle_right img {
+            width: 300%;
+            height: 300%;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .circle, .circle_right {
+            width: 100px;
+            height: 100px;
+        }
+
+        .circle img, .circle_right img {
+            width: 300%;
+            height: 300%;
+        }
+    }
                 
         
 
