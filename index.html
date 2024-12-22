@@ -276,8 +276,8 @@
 
     @media screen and (max-width: 480px) {
         .circle, .circle_right {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
         }
 
         .circle img, .circle_right img {
@@ -363,18 +363,14 @@
 <section id="contact">
     <h2>Kontakt</h2>
     <p>Masz pytania? Skontaktuj się z nami, a chętnie pomożemy Ci zaplanować idealny wypoczynek.</p>
-    <form class="contact-form">
-        <label for="name">Imię:</label>
-        <input type="text" id="name" name="name" required>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        
-        <label for="message">Wiadomość:</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
-        
-        <button type="submit">Wyślij</button>
-    </form>
+    <div class="contact-info">
+        <p>
+            <span class="icon" style="color: black;">📞</span> <strong>Telefon:</strong> <a href="tel:+48123456789" style="text-decoration: underline; color: green;">+48 123 456 789</a>
+        </p>
+        <p>
+            <span class="icon">✉️</span> <strong>Email:</strong> <a href="mailto:kontakt@przyklad.pl" style="text-decoration: underline; color: green;">kontakt@przyklad.pl</a>
+        </p>
+    </div>
 </section>
 
 <footer>
