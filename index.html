@@ -45,13 +45,24 @@
         .navbar {
             background-color: #ffffff;
             color: black;
-            display: flex;
-            justify-content: center;
             position: sticky;
             top: 0;
             z-index: 1000;
             padding: 10px 0;
+            overflow-x: auto;
+            justify-content: center; 
+            overflow-y: hidden; /* Pozwala na przewijanie w poziomie */
+            white-space: nowrap; /* Zapobiega zawijaniu elementów */
+            text-align: center;
         }
+
+        .navbar-content {
+            display: flex; /* Elementy w linii poziomej */
+            align-items: center; 
+            
+             /* Domyślnie ustawione na lewą stronę */
+        }
+
         .navbar a {
             color: black;
             text-decoration: none;
@@ -59,10 +70,31 @@
             margin: 0 5px;
             border-radius: 5px;
             transition: background-color 0.3s;
+            flex-shrink: 0; /* Zapobiega skalowaniu elementów w poziomie */
         }
+
         .navbar a:hover {
             background-color: black;
             color: white;
+        }
+        .navbar::-webkit-scrollbar {
+            height: 8px; /* Wysokość paska przewijania */
+            background-color: #e6ffe6; /* Tło paska przewijania */
+        }
+
+        .navbar::-webkit-scrollbar-thumb {
+            background-color: #008000; /* Kolor zielonego suwaka */
+            border-radius: 4px; /* Zaokrąglenie suwaka */
+        }
+
+        .navbar::-webkit-scrollbar-thumb:hover {
+            background-color: #006600; /* Ciemniejszy zielony przy najechaniu */
+        }
+
+        /* Obsługa dla przeglądarek wspierających scrollbar-color */
+        .navbar {
+            scrollbar-color: #008000 #e6ffe6; /* Suwak i tło */
+            scrollbar-width: thin; /* Wąski pasek przewijania */
         }
         nav {
             display: flex;
