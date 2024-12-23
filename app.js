@@ -169,7 +169,7 @@ function resetSelection() {
     document.querySelectorAll('.calendar-days div').forEach(day => day.classList.remove('selected-range'));
 }
 
-document.querySelector('#przycisk').onclick = () => {
+/*document.querySelector('#przycisk').onclick = () => {
     if (firstSelectedDate && secondSelectedDate) {
         let start = Math.min(firstSelectedDate, secondSelectedDate);
         let end = Math.max(firstSelectedDate, secondSelectedDate);
@@ -195,6 +195,56 @@ document.querySelector('#przycisk').onclick = () => {
         alert("Proszę wybrać zakres dat przed potwierdzeniem.");
         console.log("Brak wybranego zakresu dat.");
     }
+};*/
+document.querySelector('#przycisk').onclick = () => {
+    const modal = document.getElementById('reservationModal');
+    modal.style.display = 'block';
+
+    const closeModal = document.getElementById('closeModal');
+    closeModal.onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    // Submit form logic
+    const form = document.getElementById('reservationForm');
+    form.onsubmit = (e) => {
+        e.preventDefault();
+
+        // Get user data
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+
+        if (email && name && phone) {
+            modal.style.display = 'none'; // Hide the modal
+
+            if (firstSelectedDate && secondSelectedDate) {
+                let start = Math.min(firstSelectedDate, secondSelectedDate);
+                let end = Math.max(firstSelectedDate, secondSelectedDate);
+
+                let dateFields = {};
+
+                for (let day = start; day <= end; day++) {
+                    dateFields[day] = { date: day, email, name, phone };
+                }
+
+                db.collection(curr_year.value.toString() + "_r").doc(curr_month.value.toString()).set(dateFields, { merge: true })
+                    .then(() => {
+                        alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate} został zarezerwowany.`);
+                        console.log("Dane zapisane:", dateFields);
+                    })
+                    .catch((error) => {
+                        console.error("Błąd przy zapisywaniu: ", error);
+                        alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
+                    });
+            } else {
+                alert("Proszę wybrać zakres dat przed potwierdzeniem.");
+                console.log("Brak wybranego zakresu dat.");
+            }
+        } else {
+            alert("Proszę wypełnić wszystkie pola formularza.");
+        }
+    };
 };
 
 
