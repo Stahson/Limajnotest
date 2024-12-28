@@ -196,6 +196,57 @@ function resetSelection() {
         console.log("Brak wybranego zakresu dat.");
     }
 };*/
+// document.querySelector('#przycisk').onclick = () => {
+//     const modal = document.getElementById('reservationModal');
+//     modal.style.display = 'block';
+
+//     const closeModal = document.getElementById('closeModal');
+//     closeModal.onclick = () => {
+//         modal.style.display = 'none';
+//     };
+
+//     // Submit form logic
+//     const form = document.getElementById('reservationForm');
+//     form.onsubmit = (e) => {
+//         e.preventDefault();
+
+//         // Get user data
+//         const email = document.getElementById('email').value;
+//         const name = document.getElementById('name').value;
+//         const phone = document.getElementById('phone').value;
+
+//         if (email && name && phone) {
+//             modal.style.display = 'none'; // Hide the modal
+
+//             if (firstSelectedDate && secondSelectedDate) {
+//                 let start = Math.min(firstSelectedDate, secondSelectedDate);
+//                 let end = Math.max(firstSelectedDate, secondSelectedDate);
+
+//                 let dateFields = {};
+
+//                 for (let day = start; day <= end; day++) {
+//                     dateFields[day] = { date: day, email, name, phone };
+//                 }
+
+//                 db.collection(curr_year.value.toString() + "_r").doc(curr_month.value.toString()).set(dateFields, { merge: true })
+//                     .then(() => {
+//                         alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate} został zarezerwowany.`);
+//                         console.log("Dane zapisane:", dateFields);
+//                     })
+//                     .catch((error) => {
+//                         console.error("Błąd przy zapisywaniu: ", error);
+//                         alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
+//                     });
+//             } else {
+//                 alert("Proszę wybrać zakres dat przed potwierdzeniem.");
+//                 console.log("Brak wybranego zakresu dat.");
+//             }
+//         } else {
+//             alert("Proszę wypełnić wszystkie pola formularza.");
+//         }
+//     };
+// };
+
 document.querySelector('#przycisk').onclick = () => {
     const modal = document.getElementById('reservationModal');
     modal.style.display = 'block';
@@ -207,36 +258,70 @@ document.querySelector('#przycisk').onclick = () => {
 
     // Submit form logic
     const form = document.getElementById('reservationForm');
-    form.onsubmit = (e) => {
+    form.onsubmit = async (e) => {
         e.preventDefault();
-
         // Get user data
         const email = document.getElementById('email').value;
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
-
         if (email && name && phone) {
-            modal.style.display = 'none'; // Hide the modal
-
             if (firstSelectedDate && secondSelectedDate) {
-                let start = Math.min(firstSelectedDate, secondSelectedDate);
-                let end = Math.max(firstSelectedDate, secondSelectedDate);
+                const startDate = firstSelectedDate; // Start date
+                const endDate = secondSelectedDate;  // End date
 
-                let dateFields = {};
-
-                for (let day = start; day <= end; day++) {
-                    dateFields[day] = { date: day, email, name, phone };
-                }
-
-                db.collection(curr_year.value.toString() + "_r").doc(curr_month.value.toString()).set(dateFields, { merge: true })
-                    .then(() => {
-                        alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate} został zarezerwowany.`);
-                        console.log("Dane zapisane:", dateFields);
-                    })
-                    .catch((error) => {
-                        console.error("Błąd przy zapisywaniu: ", error);
-                        alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
+                // Prepare JSON data
+                const data = {
+                    name: String(name),          // Wymuszenie na string
+                    email: String(email),
+                    phone: String(phone),
+                    startDate: String(firstSelectedDate),
+                    endDate: String(secondSelectedDate),
+                  };
+                try {
+                    // Send HTTP POST request
+                     const response = await fetch('https://mail-90l20a35y-stahsons-projects.vercel.app/api/sendEmail', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: String(name),          // Wymuszenie na string
+                            email: String(email),
+                            phone: String(phone),
+                            startDate: String(firstSelectedDate),
+                            endDate: String(secondSelectedDate)
+                          })
                     });
+                    
+                } catch (error) {
+                    
+                }
+                if (firstSelectedDate && secondSelectedDate) {
+                    let start = Math.min(firstSelectedDate, secondSelectedDate);
+                    let end = Math.max(firstSelectedDate, secondSelectedDate);
+    
+                    let dateFields = {};
+    
+                    for (let day = start; day <= end; day++) {
+                        dateFields[day] = { date: day, email, name, phone };
+                    }
+    
+                    db.collection(curr_year.value.toString() + "_r").doc(curr_month.value.toString()).set(dateFields, { merge: true })
+                        .then(() => {
+                            
+                            console.log("Dane zapisane:", dateFields);
+                        })
+                        .catch((error) => {
+                            console.error("Błąd przy zapisywaniu: ", error);
+                            alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
+                        });
+                } else {
+                    alert("Proszę wybrać zakres dat przed potwierdzeniem.");
+                    console.log("Brak wybranego zakresu dat.");
+                }
+alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate} został zarezerwowany, został wysłany mail z potwierdzeniem na podany adres email, aby zobaczyć, czy podane dni są zarezerwowane prosimy odświeżyć stronę.`);
+
+                modal.style.display = 'none'; // Hide the modal
             } else {
                 alert("Proszę wybrać zakres dat przed potwierdzeniem.");
                 console.log("Brak wybranego zakresu dat.");
@@ -246,5 +331,4 @@ document.querySelector('#przycisk').onclick = () => {
         }
     };
 };
-
 
