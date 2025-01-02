@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>Dom 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <title>Dom Łabędzia</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,13 +17,24 @@
         .navbar {
             background-color: #ffffff;
             color: black;
-            display: flex;
-            justify-content: center;
             position: sticky;
             top: 0;
             z-index: 1000;
             padding: 10px 0;
+            overflow-x: auto;
+            justify-content: center; 
+            overflow-y: hidden; /* Pozwala na przewijanie w poziomie */
+            white-space: nowrap; /* Zapobiega zawijaniu elementów */
+            text-align: center;
         }
+
+        .navbar-content {
+            display: flex; /* Elementy w linii poziomej */
+            align-items: center; 
+            
+             /* Domyślnie ustawione na lewą stronę */
+        }
+
         .navbar a {
             color: black;
             text-decoration: none;
@@ -30,10 +42,48 @@
             margin: 0 5px;
             border-radius: 5px;
             transition: background-color 0.3s;
+            flex-shrink: 0; /* Zapobiega skalowaniu elementów w poziomie */
         }
+
         .navbar a:hover {
             background-color: black;
             color: white;
+        }
+        .navbar::-webkit-scrollbar {
+            height: 8px; /* Wysokość paska przewijania */
+            background-color: #e6ffe6; /* Tło paska przewijania */
+        }
+
+        .navbar::-webkit-scrollbar-thumb {
+            background-color: #008000; /* Kolor zielonego suwaka */
+            border-radius: 4px; /* Zaokrąglenie suwaka */
+        }
+
+        .navbar::-webkit-scrollbar-thumb:hover {
+            background-color: #006600; /* Ciemniejszy zielony przy najechaniu */
+        }
+
+        /* Obsługa dla przeglądarek wspierających scrollbar-color */
+        .navbar {
+            scrollbar-color: #008000 #e6ffe6; /* Suwak i tło */
+            scrollbar-width: thin; /* Wąski pasek przewijania */
+        }
+
+        h2 {
+            color: black; /* Kolor tekstu */
+            text-align: center; /* Wyśrodkowanie tekstu */
+            position: relative; /* Pozwoli na ustawienie kreski w stosunku do tekstu */
+        }
+
+        h2::after {
+            content: ""; /* Tworzymy pseudoelement */
+            position: absolute;
+            left: 50%;
+            bottom: -10px; /* Odstęp od tekstu */
+            width: 40%; /* Szerokość linii */
+            height: 2px; /* Grubość linii */
+            background-color: #02f80a; /* Kolor linii */
+            transform: translateX(-50%); /* Wyśrodkowanie linii */
         }
         section {
             padding: 20px;
@@ -99,13 +149,61 @@
             cursor: pointer;
         }
 
+        .map-container {
+            padding: 50px;
+            background-color: rgba(0, 0, 0, 0.5); /* Przezroczyste tło */
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 0;
+            border-radius: 10px;
+        }
+
+        /* Responsywność */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 8vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 10vw;
+            }
+
+            iframe {
+                height: 300px;
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="navbar">
         <a href="index.html"><i class="fa fa-home"></i></a> 
-        <a href="#gallery">Galeria</a>
+        <a href="#opis">O Domu</a>
+        <a href="#gallery">Galeria</a>        
+        <a href="#szczeg">Szczegóły Oferty</a>
+        <a href="#opisszczeg">Opis i Udogodnienia</a>
+        <a href="#lokalizacja">Lokalizacja</a>
+        <a href="#termin">Zarezerwuj termin</a>
+        <a href="#atrakcje">Dodatkowe atrakcje</a>
+        <a href="#cena">Cena</a>
     </div>
+    <section id="opis">
+        <h2>Dom Łabędzia</h2>
+        <p>Dom Łabędzia to dom na Warmii, który komfortowo pomieści 10 osób. Dom o powierzchni 180 metrów, położony we wsi Cerkiewnik nad jeziorem Limajno z bezpośrednim dostępem do jeziora i własnym pomostem, 5 sypialni dwuosobowych, 3 łazienki, w pełni wyposażona kuchnia, salon z widokiem na jezioro i wyjściem na taras. Dom położony jest na działce o powierzchni 1,5 ha umożliwiając wiele atrakcji sportowych takich jak: piłka nożna, siatkówka, badminton, jednocześnie gwarantując prywatność.</p>
+    
+        <p>Na zewnątrz znajduje się zadaszone miejsce na grilla z pięknym widokiem na jezioro, taras do opalania z meblami ogrodowymi oraz miejsce na ognisko.</p>
+    
+        <p>Dom z bezpośrednim dostępem do jeziora Limajno na Warmii nazwany Domem Żurawia to spokojna przystań dla spragnionych natury i odpoczynku. Można tu rozkoszować się ciszą i spokojem otaczającej przyrody oraz cieszyć się aktywnym wypoczynkiem nad jeziorem. Własny pomost daje niepowtarzalną możliwość spędzania czasu na wodzie (do dyspozycji Gości pozostają: łódź wiosłowa, SUP, kajaki) w poczuciu intymności.</p>
+    
+        <p>Całoroczny dom zaprasza do organizowania spotkań rodzinnych lub romantycznych wypadów na Warmię. Bliskość lasu i jeziora gwarantują wspaniałą scenerię.</p>
+    </section>
     <section id="gallery">
         <h2>Galeria</h2>
         <div class="gallery">
@@ -143,9 +241,95 @@
         <img class="modal-content" id="modalImage">
         <div id="caption"></div>
     </div>
-<h1>Dom 1</h1>
-<p>To jest strona Domu 1. Tutaj umieść treść dotyczącą Domu 1.</p>
-<a href="index.html">Powrót do strony głównej</a>
+    <section id="szczeg">
+        <h2>Szczegóły oferty</h2>
+        <ul>
+            <li><strong>Ilość gości:</strong> Maksymalnie 10</li>
+            <li><strong>Znakomita lokalizacja:</strong>
+                <ul>
+                    <li>Własna linia brzegowa z pomostem</li>
+                    <li>W pobliżu lasu</li>
+                </ul>
+            </li>
+            <li><strong>Liczba pomieszczeń:</strong>
+                <ul>
+                    <li>5 sypialni dwuosobowych</li>
+                    <li>3 łazienki</li>
+                    <li>Kuchnia w pełni wyposażona</li>
+                    <li>Jadalnia</li>
+                    <li>Część wypoczynkowa</li>
+                    <li>Grill i miejsce na ognisko</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <section id="opisszczeg">
+        <h2>Opis Domu Łabędzia</h2>
+        <p>Wynajmujemy cały dom (180m²) dla max. 10 osób. Dom posiada: 
+            <ul>
+                <li>1 sypialnię dwuosobową na parterze</li>
+                <li>1 sypialnię dwuosobową z łazienką na półpiętrze</li>
+                <li>3 oddzielne sypialnie dwuosobowe na piętrze</li>
+            </ul>
+        </p>
+    
+        <p>Na parterze znajduje się kuchnia w pełni wyposażona (płyta indukcyjna, piekarnik, zmywarka, lodówka), jadalnia ze stołem bilardowym, część wypoczynkowa z kominkiem. Z salonu jest wyjście na taras, gdzie znajduje się wypoczynek oraz stół z krzesłami, zejście do altany z miejscem na ognisko oraz do jeziora.</p>
+    
+        <h3>Udogodnienia</h3>
+        <ul>
+            <li>W pełni wyposażona kuchnia</li>
+            <li>Taras</li>
+            <li>WIFI</li>
+            <li>Grill</li>
+            <li>TV</li>
+            <li>Klimatyzowany parter</li>
+            <li>Altana z miejscem na ognisko</li>
+            <li>Łódź wiosłowa</li>
+            <li>2 kajaki</li>
+            <li>SUP</li>
+            <li>Bramki i piłka nożna</li>
+            <li>Siatka i piłka do siatkówki</li>
+            <li>Zestaw do badmintona</li>
+        </ul>
+    </section>
+    <section id ="lokalizacja">
+        <h2>Lokalizacja</h2>
+        <p>Dom Łabędzia</p>
+        <p>Cerkiewnik 90B, 11-040 Dobre Miasto</p>
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23900.492444318403!2d20.52145946718748!3d53.98754870000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e2be17d06b3ad5%3A0x6e6aaf5c25a9058e!2sCerkiewnik%2090B%2C%2011-040%20Cerkiewnik!5e0!3m2!1spl!2spl!4v1696879786237!5m2!1spl!2spl" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
+
+    </section>
+
+    <section id="termin">
+        <h2>Zarezerwuj termin</h2>
+        <iframe src="calendar_labedz.html" style="width: 100%; height: 600px; border: none;"></iframe>
+    </section>
+    <section id="atrakcje">
+        <h2>Dodatkowe Atrakcje</h2>
+        Oferujemy możliwość wynajmu następujących atrakcji w promocyjnych cenach:
+        <ul>
+            <li><a href="https://www.olx.pl/d/oferta/wynajme-saune-mobilna-balie-mobilna-jacuzzi-sylwester-zajety-CID3018-IDXXcxI.html" target="_blank" style="text-decoration: underline; color: green;">Sauna</a></li>
+            <li><a href="https://www.olx.pl/d/oferta/wynajme-balie-mobilna-jacuzzi-saune-mobilna-sylwester-zajety-CID3018-IDXWKHh.html" style="text-decoration: underline; color: green;">Balia jacuzzi</a></li>
+            <li><a href="https://warmiaaktywnie.pl" target="_blank" style="text-decoration: underline; color: green;">Rowery</a></li>
+            <li><a href="https://www.kajaki.olsztyn.pl" style="text-decoration: underline; color: green;">Spływ kajakowy Łyną</a></li>
+            
+        Dla naszych gości dodatkowe rabaty.
+        </ul>
+    
+        
+    </section>
+    <section id="cena">
+        <h2>Cena</h2>
+        Cena wynajmu Domu Żurawia wynosi 1.500 PLN za dobę przy wynajmie minimum 2 dób.
+    </section>
 
 </body>
 </html>

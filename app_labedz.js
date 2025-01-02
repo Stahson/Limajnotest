@@ -70,7 +70,7 @@ generateCalendar = (month, year) => {
                 day.classList.add('curr-date')
             }
             day.addEventListener('click', () => selectDate(i - first_day.getDay() + 1))
-            db.collection(year.toString()+"z_z") // e.g., 2024 collection
+            db.collection(year.toString()+"l_z") // e.g., 2024 collection
             .doc(month.toString()) // e.g., 5 for May
             .get()
             .then(doc => {                
@@ -79,7 +79,7 @@ generateCalendar = (month, year) => {
                     day.classList.add('red-selected');
                 }
             });
-            db.collection(year.toString()+"z_r") // e.g., 2024 collection
+            db.collection(year.toString()+"l_r") // e.g., 2024 collection
             .doc(month.toString()) // e.g., 5 for May
             .get()
             .then(doc => {                
@@ -306,7 +306,7 @@ document.querySelector('#przycisk').onclick = () => {
                         dateFields[day] = { date: day, email, name, phone };
                     }
     
-                    db.collection(curr_year.value.toString() + "z_r").doc(curr_month.value.toString()).set(dateFields, { merge: true })
+                    db.collection(curr_year.value.toString() + "l_r").doc(curr_month.value.toString()).set(dateFields, { merge: true })
                         .then(() => {
                             
                             console.log("Dane zapisane:", dateFields);
