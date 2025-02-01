@@ -288,8 +288,8 @@ document.querySelector('#przycisk').onclick = () => {
                             name: String(name),          // Wymuszenie na string
                             email: String(email),
                             phone: String(phone),
-                            startDate: String(firstSelectedDate),
-                            endDate: String(secondSelectedDate)
+                            startDate: String(firstSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString()),
+                            endDate: String(secondSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString())
                           })
                     });
                     
@@ -319,7 +319,7 @@ document.querySelector('#przycisk').onclick = () => {
                     alert("Proszę wybrać zakres dat przed potwierdzeniem.");
                     console.log("Brak wybranego zakresu dat.");
                 }
-alert(`Wybrany termin: od dnia ${firstSelectedDate} do dnia ${secondSelectedDate} został zarezerwowany, został wysłany mail z potwierdzeniem na podany adres email, aby zobaczyć, czy podane dni są zarezerwowane prosimy odświeżyć stronę.`);
+alert(`Wybrany termin: od dnia ${firstSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString()} do dnia ${secondSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString()} został zarezerwowany, został wysłany mail z potwierdzeniem na podany adres email, aby zobaczyć, czy podane dni są zarezerwowane prosimy odświeżyć stronę.`);
 
                 modal.style.display = 'none'; // Hide the modal
             } else {
