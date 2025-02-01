@@ -24,7 +24,8 @@ var db = firebase.firestore();
 let calendar = document.querySelector('.calendar')
 let firstSelectedDate = null;
 let secondSelectedDate = null;
-
+let firstmonth = null;
+let secondmonth = null;
 const month_names = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
 
 isLeapYear = (year) => {
@@ -53,7 +54,6 @@ generateCalendar = (month, year) => {
     month_picker.innerHTML = curr_month
     calendar_header_year.innerHTML = year
 
-    // get first day of month
     
     let first_day = new Date(year, month, 1)
 
@@ -88,12 +88,24 @@ generateCalendar = (month, year) => {
                     day.classList.add('shaped-selected');
                 }
             });
+            
+            if(firstmonth==month && secondmonth>month)
+            {
+                if (i - first_day.getDay() + 1 >= firstSelectedDate && i - first_day.getDay() + 1 <= days_of_month[firstmonth]) {
+                    day.classList.add('selected-range');
+                }
+            }
+            if(firstmonth<month&&secondmonth==month)
+            {
+                if (i - first_day.getDay() + 1 >= 0 && i - first_day.getDay() + 1 <= secondSelectedDate) {
+                    day.classList.add('selected-range');
+                }
+            }
+
         }
         calendar_days.appendChild(day)
-    }
-    
-
-        
+    } 
+             
 }
 
 let month_list = calendar.querySelector('.month-list')
@@ -143,12 +155,17 @@ document.querySelector('#next-year').onclick = () => {
 function selectDate(dayNumber) {
     if (!firstSelectedDate) {
         firstSelectedDate = dayNumber;
+        firstmonth=curr_month.value;
+        secondmonth=curr_month.value;
         highlightRange(firstSelectedDate, firstSelectedDate);
     } else if (!secondSelectedDate) {
         secondSelectedDate = dayNumber;
+        secondmonth= curr_month.value;
         highlightRange(firstSelectedDate, secondSelectedDate);
     } else {
         resetSelection();
+        firstmonth=null;
+        secondmonth=null;
         firstSelectedDate = null;
         secondSelectedDate = null;
     }
@@ -156,13 +173,26 @@ function selectDate(dayNumber) {
 
 
 function highlightRange(start, end) {
+    if(firstmonth===secondmonth){
     document.querySelectorAll('.calendar-days div').forEach(day => {
+        
         const dayNumber = parseInt(day.textContent);
         if (dayNumber >= Math.min(start, end) && dayNumber <= Math.max(start, end)) {
             day.classList.add('selected-range');
         }
         
     });
+    }
+    else 
+    {
+        document.querySelectorAll('.calendar-days div').forEach(day => {
+        
+            const dayNumber = parseInt(day.textContent);
+            if (dayNumber >= 0 && dayNumber <=  end) {
+                day.classList.add('selected-range');
+            }        
+        });
+    }
 }
 
 function resetSelection() {
@@ -279,7 +309,7 @@ document.querySelector('#przycisk').onclick = () => {
                   };
                 try {
                     // Send HTTP POST request
-                     const response = await fetch('https://mail-90l20a35y-stahsons-projects.vercel.app/api/sendEmail', {
+                     const response = await fetch('https://mail-mwzaj1sqz-stahsons-projects.vercel.app/api/sendEmail', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -288,8 +318,8 @@ document.querySelector('#przycisk').onclick = () => {
                             name: String(name),          // Wymuszenie na string
                             email: String(email),
                             phone: String(phone),
-                            startDate: String(firstSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString()),
-                            endDate: String(secondSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString())
+                            startDate: String(firstSelectedDate+'/'+(firstmonth+1).toString()+'/'+curr_year.value.toString()),
+                            endDate: String(secondSelectedDate+'/'+(secondmonth+1).toString()+'/'+curr_year.value.toString())
                           })
                     });
                     
@@ -297,6 +327,7 @@ document.querySelector('#przycisk').onclick = () => {
                     
                 }
                 if (firstSelectedDate && secondSelectedDate) {
+                    if(firstmonth==secondmonth){
                     let start = Math.min(firstSelectedDate, secondSelectedDate);
                     let end = Math.max(firstSelectedDate, secondSelectedDate);
     
@@ -315,11 +346,51 @@ document.querySelector('#przycisk').onclick = () => {
                             console.error("Błąd przy zapisywaniu: ", error);
                             alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
                         });
+
+                    }
+                    else
+                    {
+                        let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                        let dateFields_1 = {};
+    
+                    for (let day = firstSelectedDate; day <= days_of_month[firstmonth]; day++) {
+                        dateFields_1[day] = { date: day, email, name, phone };
+                    }
+    
+                    db.collection(curr_year.value.toString() + "z_r").doc(firstmonth.toString()).set(dateFields_1, { merge: true })
+                        .then(() => {
+                            
+                            console.log("Dane zapisane:", dateFields_1);
+                        })
+                        .catch((error) => {
+                            console.error("Błąd przy zapisywaniu: ", error);
+                            alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
+                        });
+                    
+                    let dateFields_2 = {};
+    
+                    for (let day = 1; day <= secondSelectedDate; day++) {
+                        dateFields_2[day] = { date: day, email, name, phone };
+                    }
+    
+                    db.collection(curr_year.value.toString() + "z_r").doc(secondmonth.toString()).set(dateFields_2, { merge: true })
+                        .then(() => {
+                            
+                            console.log("Dane zapisane:", dateFields_2);
+                        })
+                        .catch((error) => {
+                            console.error("Błąd przy zapisywaniu: ", error);
+                            alert("Wystąpił błąd przy zapisie. Spróbuj ponownie.");
+                        });
+                    }
+                        
+                    
+
                 } else {
                     alert("Proszę wybrać zakres dat przed potwierdzeniem.");
                     console.log("Brak wybranego zakresu dat.");
                 }
-alert(`Wybrany termin: od dnia ${firstSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString()} do dnia ${secondSelectedDate+'/'+(curr_month.value+1).toString()+'/'+curr_year.value.toString()} został zarezerwowany, został wysłany mail z potwierdzeniem na podany adres email, aby zobaczyć, czy podane dni są zarezerwowane prosimy odświeżyć stronę.`);
+alert(`Wybrany termin: od dnia ${firstSelectedDate+'/'+(firstmonth+1).toString()+'/'+curr_year.value.toString()} do dnia ${secondSelectedDate+'/'+(secondmonth+1).toString()+'/'+curr_year.value.toString()} został zarezerwowany, został wysłany mail z potwierdzeniem na podany adres email, aby zobaczyć, czy podane dni są zarezerwowane prosimy odświeżyć stronę.`);
 
                 modal.style.display = 'none'; // Hide the modal
             } else {
