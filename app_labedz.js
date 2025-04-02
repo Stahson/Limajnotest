@@ -321,7 +321,7 @@ document.querySelector('#przycisk').onclick = () => {
                   };
                 try {
                     // Send HTTP POST request
-                     const response = await fetch('https://mail-mwzaj1sqz-stahsons-projects.vercel.app/api/sendEmail', {
+                     const response = await fetch('https:///mailstah-26tpntak4-stahsons-projects.vercel.app/api/sendEmail', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -331,7 +331,8 @@ document.querySelector('#przycisk').onclick = () => {
                             email: String(email),
                             phone: String(phone),
                             startDate: String(firstSelectedDate+'/'+(firstmonth+1).toString()+'/'+curr_year.value.toString()),
-                            endDate: String(secondSelectedDate+'/'+(secondmonth+1).toString()+'/'+curr_year.value.toString())
+                            endDate: String(secondSelectedDate+'/'+(secondmonth+1).toString()+'/'+curr_year.value.toString()),
+                            home: 'Dom Łabędzia'
                           })
                     });
                     
