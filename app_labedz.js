@@ -48,7 +48,7 @@ generateCalendar = (month, year) => {
     calendar_days.innerHTML = ''
 
     let currDate = new Date()
-    if (!month) month = currDate.getMonth()
+    if (!month && month!=0) month = currDate.getMonth()
     if (!year) year = currDate.getFullYear()
 
     let curr_month = `${month_names[month]}`
@@ -148,6 +148,15 @@ document.querySelector('#next-year').onclick = () => {
     generateCalendar(curr_month.value, curr_year.value)
 }
 
+document.querySelector('#prev-month').onclick = () => {
+    curr_month.value=(12+curr_month.value-1)%12
+    generateCalendar(curr_month.value, curr_year.value)
+}
+
+document.querySelector('#next-month').onclick = () => {
+    curr_month.value=(curr_month.value+1)%12
+    generateCalendar(curr_month.value, curr_year.value)
+}
 // let dark_mode_toggle = document.querySelector('.dark-mode-switch')
 
 // dark_mode_toggle.onclick = () => {
