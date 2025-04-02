@@ -123,6 +123,7 @@ month_names.forEach((e, index) => {
 
 let month_picker = calendar.querySelector('#month-picker')
 
+
 month_picker.onclick = () => {
     month_list.classList.add('show')
 }
@@ -144,6 +145,15 @@ document.querySelector('#next-year').onclick = () => {
     generateCalendar(curr_month.value, curr_year.value)
 }
 
+document.querySelector('#prev-month').onclick = () => {
+    curr_month.value=(12+curr_month.value-1)%12
+    generateCalendar(curr_month.value, curr_year.value)
+}
+
+document.querySelector('#next-month').onclick = () => {
+    curr_month.value=(curr_month.value+1)%12
+    generateCalendar(curr_month.value, curr_year.value)
+}
 // let dark_mode_toggle = document.querySelector('.dark-mode-switch')
 
 // dark_mode_toggle.onclick = () => {

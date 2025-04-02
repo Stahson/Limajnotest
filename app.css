@@ -240,6 +240,20 @@ body {
     background-color: var(--color-hover);
 }
 
+.month-change {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.month-change:hover {
+    background-color: var(--color-hover);
+}
+
 .year-picker {
     display: flex;
     align-items: center;
@@ -258,6 +272,8 @@ body {
 .year-change:hover {
     background-color: var(--color-hover);
 }
+
+
 
 .calendar-footer {
     padding: 10px;
