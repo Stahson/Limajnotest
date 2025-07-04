@@ -11,8 +11,8 @@
     --light-hover: #edf0f5;
     --light-text: #151426;
 
-    --blue: #0000ff;
-    --white: #fff;
+    --blue: rgb(35, 178, 221);
+    --white: #000;
 
     --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
@@ -28,19 +28,79 @@
 }
 
 .selected-range {
-    background-color: blue;
-    color: white;
+    background-color: rgb(35, 178, 221);
 }
 
 .red-selected {
     background-color: red;
-    color: white;
     border-radius: 50%;
     font-weight: bold;
 }
 
 .red-selected:hover {
     background-color: darkred;
+    transform: scale(1.1);
+}
+
+.red-selected-left {
+    background: linear-gradient(to right, red 50%, transparent 50%);
+    border-radius: 50% 0 0 50%;
+}
+
+.red-selected-right {
+    background: linear-gradient(to left, red 50%, transparent 50%);
+    border-radius: 0 50% 50% 0;
+}
+
+.shaped-selected-right {
+    background: repeating-linear-gradient(
+        45deg,
+        red,
+        red 5px,
+        white 5px,
+        white 10px
+    ) right / 50% 100% no-repeat;
+    color: black;
+    border-radius: 0 50% 50% 0;
+    font-weight: bold;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.shaped-selected-right:hover {
+    background: repeating-linear-gradient(
+        45deg,
+        darkred,
+        darkred 5px,
+        white 5px,
+        white 10px
+    ) right / 50% 100% no-repeat;
+    transform: scale(1.1);
+}
+
+.shaped-selected-left {
+    background: repeating-linear-gradient(
+        45deg,
+        red,
+        red 5px,
+        white 5px,
+        white 10px
+    ) left / 50% 100% no-repeat;
+    color: black;
+    border-radius: 50% 0 0 50%;
+    font-weight: bold;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.shaped-selected-left:hover {
+    background: repeating-linear-gradient(
+        45deg,
+        darkred,
+        darkred 5px,
+        white 5px,
+        white 10px
+    ) left / 50% 100% no-repeat;
     transform: scale(1.1);
 }
 

@@ -38,25 +38,27 @@ getFebDays = (year) => {
 }
 
 generateCalendar = (month, year) => {
-    
-
     let calendar_days = calendar.querySelector('.calendar-days')
     let calendar_header_year = calendar.querySelector('#year')
+    let prev = false
+    let next = false
 
     let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     calendar_days.innerHTML = ''
 
     let currDate = new Date()
-    if (!month && month!=0) month = currDate.getMonth()
+    if (!month && month !== 0) month = currDate.getMonth()
     if (!year) year = currDate.getFullYear()
 
     let curr_month = `${month_names[month]}`
     month_picker.innerHTML = curr_month
     calendar_header_year.innerHTML = year
-
+    let prevMonth = month === 0 ? 11 : month - 1
+    let prevYear = month === 0 ? year - 1 : year
+    let nextMonth = month === 11 ? 0 : month + 1
+    let nextYear = month === 11 ? year + 1 : year
     // get first day of month
-    
     let first_day = new Date(year, month, 1)
 
     for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
@@ -72,44 +74,107 @@ generateCalendar = (month, year) => {
                 day.classList.add('curr-date')
             }
             day.addEventListener('click', () => selectDate(i - first_day.getDay() + 1))
-            db.collection(year.toString()+"l_z") // e.g., 2024 collection
-            .doc(month.toString()) // e.g., 5 for May
+            
+
+            Promise.all([
+                db.collection(year.toString() + "l_z").doc(month.toString()).get(),
+                db.collection(year.toString() + "l_r").doc(month.toString()).get(),
+                i == first_day.getDay() ? db.collection(prevYear.toString() + "l_z").doc(prevMonth.toString()).get() : Promise.resolve(null),
+                i == first_day.getDay() ? db.collection(prevYear.toString() + "l_r").doc(prevMonth.toString()).get() : Promise.resolve(null),
+                i == days_of_month[month] + first_day.getDay() - 1 ? db.collection(nextYear.toString() + "l_z").doc(nextMonth.toString()).get() : Promise.resolve(null),
+                i == days_of_month[month] + first_day.getDay() - 1 ? db.collection(nextYear.toString() + "l_r").doc(nextMonth.toString()).get() : Promise.resolve(null)
+            ])
+            .then(([lzDoc, lrDoc, prevLzDoc, prevLrDoc, nextLzDoc, nextLrDoc]) => {
+
+            })
+            .catch(error => {
+                console.error("Error fetching collections:", error)
+            })
+
+            // Check l_z collection
+            db.collection(year.toString() + "l_z")
+            .doc(month.toString())
             .get()
             .then(doc => {                
-                let savedDates = doc.data();            
-                if (savedDates[(i-first_day.getDay()+1).toString()]) {
-                    day.classList.add('red-selected');
-                }
-            });
-            db.collection(year.toString()+"l_r") // e.g., 2024 collection
-            .doc(month.toString()) // e.g., 5 for May
-            .get()
-            .then(doc => {                
-                let savedDates = doc.data();            
-                if (savedDates[(i-first_day.getDay()+1).toString()]) {
-                    day.classList.add('shaped-selected');
+                let savedDates = doc.data() || {};
+                let selectedDays = Object.keys(savedDates).map(Number).filter(day => savedDates[day]);
+                if (selectedDays.length > 0) {
+                    let firstSelectedDay = Math.min(...selectedDays);
+                    let lastSelectedDay = Math.max(...selectedDays);
+                    let currentDay = i - first_day.getDay() + 1;
+                    let nextday = i - first_day.getDay() + 2;
+                    if (currentDay === firstSelectedDay) {                        
+                        day.classList.add('red-selected-right');
+                        prev = true;
+                    } else if (currentDay === lastSelectedDay) {
+                        day.classList.add('red-selected-left');
+                    } else if (savedDates[currentDay.toString()]) {
+                        
+                        if(savedDates[nextday.toString()] && prev) { 
+                            day.classList.add('red-selected');
+                        }
+                        else if(prev) {
+                            day.classList.add('red-selected-left');
+                        }
+                        else {
+                            day.classList.add('red-selected-right');
+                        }
+                        prev = true
+                    }
+                    else {
+                        prev = false
+                    }
                 }
             });
 
-            if(firstmonth==month && secondmonth>month)
-            {
+            // Check l_r collection
+            db.collection(year.toString() + "l_r")
+            .doc(month.toString())
+            .get()
+            .then(doc => {                
+                let savedDates = doc.data() || {};
+                let selectedDays = Object.keys(savedDates).map(Number).filter(day => savedDates[day]);
+                if (selectedDays.length > 0) {
+                    let firstSelectedDay = Math.min(...selectedDays);
+                    let lastSelectedDay = Math.max(...selectedDays);
+                    let currentDay = i - first_day.getDay() + 1;
+                    let nextday = i - first_day.getDay() + 2;
+                    if (currentDay === firstSelectedDay) {
+                        prev = true
+                        day.classList.add('shaped-selected-right');
+                    } else if (currentDay === lastSelectedDay) {
+                        day.classList.add('shaped-selected-left');
+                    } else if (savedDates[currentDay.toString()]) {
+                        if(savedDates[nextday.toString()] && prev) {  
+                            day.classList.add('shaped-selected');
+                        }
+                        else if(prev) {
+                            day.classList.add('shaped-selected-left');
+                        }
+                        else {
+                            day.classList.add('shaped-selected-right');
+                        }
+                        prev = true
+                    }
+                    else {
+                        prev = false
+                    }
+                }
+            });
+
+            if (firstmonth === month && secondmonth > month) {
                 if (i - first_day.getDay() + 1 >= firstSelectedDate && i - first_day.getDay() + 1 <= days_of_month[firstmonth]) {
                     day.classList.add('selected-range');
                 }
             }
-            if(firstmonth<month&&secondmonth==month)
-            {
+            if (firstmonth < month && secondmonth === month) {
                 if (i - first_day.getDay() + 1 >= 0 && i - first_day.getDay() + 1 <= secondSelectedDate) {
                     day.classList.add('selected-range');
                 }
             }
-
         }
         calendar_days.appendChild(day)
     }
-    
-
-        
 }
 
 let month_list = calendar.querySelector('.month-list')
