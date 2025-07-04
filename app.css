@@ -31,26 +31,7 @@
     background-color: rgb(35, 178, 221);
 }
 
-.red-selected {
-    background-color: red;
-    border-radius: 50%;
-    font-weight: bold;
-}
 
-.red-selected:hover {
-    background-color: darkred;
-    transform: scale(1.1);
-}
-
-.red-selected-left {
-    background: linear-gradient(to right, red 50%, transparent 50%);
-    border-radius: 50% 0 0 50%;
-}
-
-.red-selected-right {
-    background: linear-gradient(to left, red 50%, transparent 50%);
-    border-radius: 0 50% 50% 0;
-}
 
 .shaped-selected-right {
     background: repeating-linear-gradient(
@@ -129,6 +110,89 @@
     );
     transform: scale(1.1);
 }
+
+.red-selected {
+    background-color: red;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.red-selected:hover {
+    background-color: darkred;
+    transform: scale(1.1);
+}
+
+.red-selected-left {
+    background: linear-gradient(to right, red 50%, transparent 50%);
+    border-radius: 50% 0 0 50%;
+}
+
+.red-selected-right {
+    background: linear-gradient(to left, red 50%, transparent 50%);
+    border-radius: 0 50% 50% 0;
+}
+
+
+.shaped-left-red-right {
+    background: 
+        linear-gradient(to left, red 50%, transparent 50%), /* Right half: red gradient */
+        repeating-linear-gradient(
+            45deg,
+            red,
+            red 5px,
+            white 5px,
+            white 10px
+        ) left / 50% 100% no-repeat; /* Left half: shaped gradient */
+    color: black;
+    border-radius: 50%; /* Circular shape to match both styles */
+    font-weight: bold;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.shaped-left-red-right:hover {
+    background: 
+        linear-gradient(to left, darkred 50%, transparent 50%), /* Darker red on hover */
+        repeating-linear-gradient(
+            45deg,
+            darkred,
+            darkred 5px,
+            white 5px,
+            white 10px
+        ) left / 50% 100% no-repeat;
+    transform: scale(1.1);
+}
+
+.red-left-shaped-right {
+    background: 
+        linear-gradient(to right, red 50%, transparent 50%), /* Left half: red gradient */
+        repeating-linear-gradient(
+            45deg,
+            red,
+            red 5px,
+            white 5px,
+            white 10px
+        ) right / 50% 100% no-repeat; /* Right half: shaped gradient */
+    color: black;
+    border-radius: 50%; /* Circular shape to match both styles */
+    font-weight: bold;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.red-left-shaped-right:hover {
+    background: 
+        linear-gradient(to right, darkred 50%, transparent 50%), /* Darker red on hover */
+        repeating-linear-gradient(
+            45deg,
+            darkred,
+            darkred 5px,
+            white 5px,
+            white 10px
+        ) right / 50% 100% no-repeat;
+    transform: scale(1.1);
+}
+
 .light {
     --bg-body: var(--light-body);
     --bg-main: var(--light-main);
