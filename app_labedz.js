@@ -79,13 +79,59 @@ generateCalendar = (month, year) => {
             Promise.all([
                 db.collection(year.toString() + "l_z").doc(month.toString()).get(),
                 db.collection(year.toString() + "l_r").doc(month.toString()).get(),
-                i == first_day.getDay() ? db.collection(prevYear.toString() + "l_z").doc(prevMonth.toString()).get() : Promise.resolve(null),
-                i == first_day.getDay() ? db.collection(prevYear.toString() + "l_r").doc(prevMonth.toString()).get() : Promise.resolve(null),
-                i == days_of_month[month] + first_day.getDay() - 1 ? db.collection(nextYear.toString() + "l_z").doc(nextMonth.toString()).get() : Promise.resolve(null),
-                i == days_of_month[month] + first_day.getDay() - 1 ? db.collection(nextYear.toString() + "l_r").doc(nextMonth.toString()).get() : Promise.resolve(null)
+                db.collection(prevYear.toString() + "l_z").doc(prevMonth.toString()).get(),
+                db.collection(prevYear.toString() + "l_r").doc(prevMonth.toString()).get(),
+                db.collection(nextYear.toString() + "l_z").doc(nextMonth.toString()).get(),
+                db.collection(nextYear.toString() + "l_r").doc(nextMonth.toString()).get() 
             ])
             .then(([lzDoc, lrDoc, prevLzDoc, prevLrDoc, nextLzDoc, nextLrDoc]) => {
-
+                let savedDatesR = lrDoc.data() || {};
+                let selectedDaysR = Object.keys(savedDatesR).map(Number).filter(day => savedDatesR[day]);
+                let prevsavedDatesR = prevLrDoc.data() || {};
+                let prevselectedDaysR = Object.keys(prevsavedDatesR).map(Number).filter(day => prevsavedDatesR[day]);
+                let nextsavedDatesR = nextLrDoc.data() || {};
+                let nextselectedDaysR = Object.keys(nextsavedDatesR).map(Number).filter(day => nextsavedDatesR[day]);
+                 if (selectedDaysR.length > 0) {
+                    let firstSelectedDay = Math.min(...selectedDaysR);
+                    let lastSelectedDay = Math.max(...selectedDaysR);
+                    let currentDay = i - first_day.getDay() + 1;
+                    let nextday = i - first_day.getDay() + 2;
+                   if (savedDatesR[currentDay.toString()]) 
+                    {      
+                        if(savedDatesR[nextday.toString()] && prev) { 
+                            day.classList.add('shaped-selected');
+                        }
+                        else if(i == days_of_month[month] + first_day.getDay() - 1) 
+                        {
+                            if(nextselectedDaysR.includes(1) && prev) {
+                                day.classList.add('shaped-selected');
+                            }
+                            else if(prev) {
+                                day.classList.add('shaped-selected-left');
+                            }
+                            else {
+                                day.classList.add('shaped-selected-right');
+                            }
+                        }
+                        else {
+                            if(prev) {
+                                day.classList.add('shaped-selected-left');
+                            }
+                            else {
+                                if(prevselectedDaysR.includes(days_of_month[prevMonth]) && i == first_day.getDay()) {
+                                    day.classList.add('shaped-selected');
+                                }
+                                else {
+                                    day.classList.add('shaped-selected-right');
+                                }
+                            }
+                            prev = true
+                        }
+                    }
+                    else {
+                        prev = false
+                    }
+                }
             })
             .catch(error => {
                 console.error("Error fetching collections:", error)
@@ -128,39 +174,39 @@ generateCalendar = (month, year) => {
             });
 
             // Check l_r collection
-            db.collection(year.toString() + "l_r")
-            .doc(month.toString())
-            .get()
-            .then(doc => {                
-                let savedDates = doc.data() || {};
-                let selectedDays = Object.keys(savedDates).map(Number).filter(day => savedDates[day]);
-                if (selectedDays.length > 0) {
-                    let firstSelectedDay = Math.min(...selectedDays);
-                    let lastSelectedDay = Math.max(...selectedDays);
-                    let currentDay = i - first_day.getDay() + 1;
-                    let nextday = i - first_day.getDay() + 2;
-                    if (currentDay === firstSelectedDay) {
-                        prev = true
-                        day.classList.add('shaped-selected-right');
-                    } else if (currentDay === lastSelectedDay) {
-                        day.classList.add('shaped-selected-left');
-                    } else if (savedDates[currentDay.toString()]) {
-                        if(savedDates[nextday.toString()] && prev) {  
-                            day.classList.add('shaped-selected');
-                        }
-                        else if(prev) {
-                            day.classList.add('shaped-selected-left');
-                        }
-                        else {
-                            day.classList.add('shaped-selected-right');
-                        }
-                        prev = true
-                    }
-                    else {
-                        prev = false
-                    }
-                }
-            });
+            // db.collection(year.toString() + "l_r")
+            // .doc(month.toString())
+            // .get()
+            // .then(doc => {                
+            //     let savedDates = doc.data() || {};
+            //     let selectedDays = Object.keys(savedDates).map(Number).filter(day => savedDates[day]);
+            //     if (selectedDays.length > 0) {
+            //         let firstSelectedDay = Math.min(...selectedDays);
+            //         let lastSelectedDay = Math.max(...selectedDays);
+            //         let currentDay = i - first_day.getDay() + 1;
+            //         let nextday = i - first_day.getDay() + 2;
+            //         if (currentDay === firstSelectedDay) {
+            //             prev = true
+            //             day.classList.add('shaped-selected-right');
+            //         } else if (currentDay === lastSelectedDay) {
+            //             day.classList.add('shaped-selected-left');
+            //         } else if (savedDates[currentDay.toString()]) {
+            //             if(savedDates[nextday.toString()] && prev) {  
+            //                 day.classList.add('shaped-selected');
+            //             }
+            //             else if(prev) {
+            //                 day.classList.add('shaped-selected-left');
+            //             }
+            //             else {
+            //                 day.classList.add('shaped-selected-right');
+            //             }
+            //             prev = true
+            //         }
+            //         else {
+            //             prev = false
+            //         }
+            //     }
+            // });
 
             if (firstmonth === month && secondmonth > month) {
                 if (i - first_day.getDay() + 1 >= firstSelectedDate && i - first_day.getDay() + 1 <= days_of_month[firstmonth]) {
