@@ -225,76 +225,7 @@ generateCalendar = (month, year) => {
                 console.error("Error fetching collections:", error)
             })
 
-            // Check l_z collection
-            // db.collection(year.toString() + "l_z")
-            // .doc(month.toString())
-            // .get()
-            // .then(doc => {                
-            //     let savedDates = doc.data() || {};
-            //     let selectedDays = Object.keys(savedDates).map(Number).filter(day => savedDates[day]);
-            //     if (selectedDays.length > 0) {
-            //         let firstSelectedDay = Math.min(...selectedDays);
-            //         let lastSelectedDay = Math.max(...selectedDays);
-            //         let currentDay = i - first_day.getDay() + 1;
-            //         let nextday = i - first_day.getDay() + 2;
-            //         if (currentDay === firstSelectedDay) {                        
-            //             day.classList.add('red-selected-right');
-            //             prev = true;
-            //         } else if (currentDay === lastSelectedDay) {
-            //             day.classList.add('red-selected-left');
-            //         } else if (savedDates[currentDay.toString()]) {
-                        
-            //             if(savedDates[nextday.toString()] && prev) { 
-            //                 day.classList.add('red-selected');
-            //             }
-            //             else if(prev) {
-            //                 day.classList.add('red-selected-left');
-            //             }
-            //             else {
-            //                 day.classList.add('red-selected-right');
-            //             }
-            //             prev = true
-            //         }
-            //         else {
-            //             prev = false
-            //         }
-            //     }
-            // });
-
-            // Check l_r collection
-            // db.collection(year.toString() + "l_r")
-            // .doc(month.toString())
-            // .get()
-            // .then(doc => {                
-            //     let savedDates = doc.data() || {};
-            //     let selectedDays = Object.keys(savedDates).map(Number).filter(day => savedDates[day]);
-            //     if (selectedDays.length > 0) {
-            //         let firstSelectedDay = Math.min(...selectedDays);
-            //         let lastSelectedDay = Math.max(...selectedDays);
-            //         let currentDay = i - first_day.getDay() + 1;
-            //         let nextday = i - first_day.getDay() + 2;
-            //         if (currentDay === firstSelectedDay) {
-            //             prev = true
-            //             day.classList.add('shaped-selected-right');
-            //         } else if (currentDay === lastSelectedDay) {
-            //             day.classList.add('shaped-selected-left');
-            //         } else if (savedDates[currentDay.toString()]) {
-            //             if(savedDates[nextday.toString()] && prev) {  
-            //                 day.classList.add('shaped-selected');
-            //             }
-            //             else if(prev) {
-            //                 day.classList.add('shaped-selected-left');
-            //             }
-            //             else {
-            //                 day.classList.add('shaped-selected-right');
-            //             }
-            //             prev = true
-            //         }
-            //         else {
-            //             prev = false
-            //         }
-            //     }
-            // });
+    
 
             if (firstmonth === month && secondmonth > month) {
                 if (i - first_day.getDay() + 1 >= firstSelectedDate && i - first_day.getDay() + 1 <= days_of_month[firstmonth]) {
@@ -489,6 +420,9 @@ function resetSelection() {
 // };
 
 document.querySelector('#przycisk').onclick = () => {
+    const loadingModal = document.getElementById('loadingModal');
+    loadingModal.style.display = 'none';
+
     const modal = document.getElementById('reservationModal');
     modal.style.display = 'block';
 
@@ -500,6 +434,8 @@ document.querySelector('#przycisk').onclick = () => {
     // Submit form logic
     const form = document.getElementById('reservationForm');
     form.onsubmit = async (e) => {
+        modal.style.display = 'none'; // Hide the modal
+        loadingModal.style.display = 'block'; // Show loading modal
         e.preventDefault();
         // Get user data
         const email = document.getElementById('email').value;
@@ -599,7 +535,19 @@ document.querySelector('#przycisk').onclick = () => {
                     alert("Proszę wybrać zakres dat przed potwierdzeniem.");
                     console.log("Brak wybranego zakresu dat.");
                 }
-alert(`Wybrany termin: od dnia ${firstSelectedDate+'/'+(firstmonth+1).toString()+'/'+curr_year.value.toString()} do dnia ${secondSelectedDate+'/'+(secondmonth+1).toString()+'/'+curr_year.value.toString()} został zarezerwowany, został wysłany mail z potwierdzeniem na podany adres email, aby zobaczyć, czy podane dni są zarezerwowane prosimy odświeżyć stronę.`);
+
+                const loadingContent = document.getElementById('loadingContent');
+                    loadingContent.innerHTML = `
+                        <p>Wybrany termin: od dnia ${firstSelectedDate}/${(firstmonth+1)}/${curr_year.value} do dnia ${secondSelectedDate}/${(secondmonth+1)}/${curr_year.value} został zarezerwowany.</p>
+                        <p>Został wysłany mail z potwierdzeniem na podany adres email.</p>
+                        <p>Po kliknięciu przycisku zamknij kalendarz sam się zaktualizuje.</p>
+                        <button id="closeLoadingModal" class="btnl">Zamknij</button>
+                    `;
+                    // Dodaj obsługę przycisku zamknięcia
+                    document.getElementById('closeLoadingModal').onclick = () => {
+                        loadingModal.style.display = 'none';
+                        generateCalendar(curr_month.value, curr_year.value); 
+                    };
 
                 modal.style.display = 'none'; // Hide the modal
             } else {
