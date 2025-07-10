@@ -28,7 +28,7 @@
 }
 
 .selected-range {
-    background-color: rgb(35, 178, 221);
+    background-color: rgb(35, 178, 221) !important;
 }
 
 
@@ -87,16 +87,16 @@
 
 .shaped-selected {
     background: repeating-linear-gradient(
-        45deg,         /* Angle of the stripes */
-        red,           /* Start color */
-        red 5px,       /* Red stripe width */
-        white 5px,     /* White stripe transition start */
-        white 10px    /* White stripe width */
-    );
-    color: black;       /* Text color that contrasts with red and white */
-    border-radius: 50%; /* Circular shape */
+        45deg,         
+        red,           
+        red 5px,       
+        white 5px,     
+        white 10px   
+    ) !important;
+    color: black;       
+    border-radius: 50%; 
     font-weight: bold;
-    padding: 5px;       /* Adjust padding for a balanced look */
+    padding: 5px;      
     box-sizing: border-box;
 }
 
@@ -112,7 +112,7 @@
 }
 
 .red-selected {
-    background-color: red;
+    background-color: red !important;
     border-radius: 50%;
     font-weight: bold;
 }
@@ -224,7 +224,6 @@ body {
     padding: 20px;
     position: relative;
     overflow: hidden;
-    /* transform: scale(1.25); */
 }
 
 .light .calendar {
@@ -276,7 +275,6 @@ body {
     position: relative;
     cursor: pointer;
     animation: to-top 1s forwards;
-    /* border-radius: 50%; */
 }
 
 .calendar-days div span {
@@ -443,7 +441,6 @@ body {
     cursor: pointer;
 }
 
-/* Green background for inputs */
 .green-background {
     background-color: #dff0d8;
     border: 1px solid #3c763d;
@@ -454,7 +451,6 @@ body {
     font-size: 16px;
 }
 
-/* Green button */
 .green-button {
     background-color: #5cb85c;
     color: white;
